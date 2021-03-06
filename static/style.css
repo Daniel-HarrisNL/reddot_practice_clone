@@ -10,7 +10,6 @@ body {
   width: 99vw;
   grid-row-gap: 2em;
   grid-column-gap: 2em;
-  /* grid-template-columns: repeat(6,1fr);*/
   grid-template-rows: 128px auto; 
   grid-template-areas:
   "hotbar hotbar sideboard"
@@ -29,8 +28,8 @@ body {
   grid-template-areas:
   "likebar info info info info info info"
   "likebar post post post post post post"
-  "likebar expand expand expand expand expand expand"
   "likebar comment comment comment comment comment comment"
+  "likebar expand expand expand expand expand expand"
 }
 
 .post-card {
@@ -88,13 +87,35 @@ body {
   background-color:rgb(59, 59, 77);
 }
 
-.expand{
+.expand-container{
   grid-area: expand;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border:1px solid #9e9e9e;
   border-left: none;
   width: 100%;
   height: auto;
   background-color:rgb(59, 59, 77);
+}
+
+.reply-bar{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color:rgb(54, 54, 71);
+  border:1px solid #9e9e9e;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+}
+.reply-content{
+  text-align: center;
+  color: blue;
+  font-size: 15px;
 }
 
 .comment-bar{
@@ -349,7 +370,14 @@ body {
 .text-wrapper{
   text-align: justify;
   padding: 8px 32px;
+  font-size: 18px;
   color: rgb(218, 218, 218)
+}
+
+.reply-wrapper{
+  text-align: justify;
+  padding: 4px 32px;
+  color: rgb(201, 198, 198)
 }
 
 
