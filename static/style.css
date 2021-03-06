@@ -17,7 +17,6 @@ body {
   
 }
 
-
 .post-grid {
   display: grid;
   height: 100%;
@@ -279,9 +278,6 @@ body {
   
 }
 
-
-
-
 .btn-login {
   float: left;
 	background-color:#000000;
@@ -332,7 +328,6 @@ body {
   text-decoration: none;
 }
 
-
 .btn-ico {
   float: right;
   background-color:#666666;
@@ -350,8 +345,6 @@ body {
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.50);
 }
 
-
-
 .btn-wrapper {
   float: left;
 }
@@ -365,7 +358,6 @@ body {
   margin: 8px;
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.50);
 }
-
 
 .text-wrapper{
   text-align: justify;
@@ -383,7 +375,6 @@ body {
   border-right: none;
   color: rgb(201, 198, 198)
 }
-
 
 .btn-topjump {
   background-color:#e6e6e6;
@@ -503,7 +494,6 @@ body {
   top: 10%;
 }
 
-
 .ad-content {
   background-color: white;
   width: 100%;
@@ -565,8 +555,6 @@ body {
   
 }
 
-/* -----search-input styles----- */
-
 .search-input {
   box-sizing: border-box;
   margin: 0;
@@ -607,9 +595,6 @@ body {
   top: 0;
   width: 24px;
 }
-
-
-/* -----search-icon styles---- */
 
 .search-icon-wrapper {
   padding: 0 24px;
