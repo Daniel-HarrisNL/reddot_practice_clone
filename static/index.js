@@ -21,18 +21,18 @@ function main(){
 
         let comment_buttons = document.querySelectorAll("[id^='comment-expand-']");
         
-        comment_buttons.forEach(comment_button => {
-                comment_button.addEventListener("click", function(event){
-                        let this_button = event.target.id;
-                        console.log("Target button ID: " + this_button)
+        // comment_buttons.forEach(comment_button => {
+        //         comment_button.addEventListener("click", function(event){
+        //                 let this_button = event.target.id;
+        //                 console.log("Target button ID: " + this_button)
                         
-                        let parent_post = getParentPost(this_button);
+        //                 let parent_post = getParentPost(this_button);
                         
-                        console.log(this_button);
+        //                 console.log(this_button);
                         
-                        showComments(parent_post);
-                });
-        });
+        //                 showComments(parent_post);
+        //         });
+        // });
            
 }
 
@@ -45,8 +45,9 @@ function getParentPost(button_id){
         return parent_post
 }
 
-function showComments(target_post){
-        let comment_section = document.querySelector(`#expand-container`);
+function showComments(target_post_id){
+        let target_post = document.querySelector(`#${target_post_id}`);
+        let comment_section = target_post.querySelector("#expand-container");
         comment_section.style.display = "block";
 }
 
@@ -111,21 +112,78 @@ function createPost(post_array){
                 let new_post = document.createElement('div');
                 new_post.className = 'post-card';
                 new_post.id = `post-card-${next_id}`;
-                new_post.innerHTML = `<div class="post-grid"><div class="likebar"><div class="like-wrapper"><div class="upvote"><i class="fa fa-arrow-up" aria-hidden="true"></i></div><p>0</p><div class="downvote"><i class="fa fa-arrow-down" aria-hidden="true"></i></div></div></div><div class="info"><div class="user-ava"></div><div class="info-wrapper-text"><p>${username}</p><p style="text-indent: 2em">${submit_date}</p></div></div><div class="post-content"><div class="text-wrapper"><p>${text_content}</p></div></div><div class="expand-container"><!-- Add comments/replies above this point --><div class="reply-bar"></div></div><div class="comment-bar"><div class="comment-bar-wrapper"><div class="comment-bar-messages"><a href="#"><i class="fa fa-comment" aria-hidden="true"></i></a><a href="#"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a></div><div class="comment-bar-share"><a href="#"><i class="fa fa-share" aria-hidden="true"></i></a><a href="#"><p style="text-indent: 8px">Share</p></a></div><div class="comment-bar-save"><a href="#"><i class="fa fa-bookmark" aria-hidden="true"></i></a><a href="#"><p style="text-indent: 8px">Save</p></a></div></div><div class="expand-container" id="expand-container">
-                <!-- Add comments/replies above this point -->
-                <div class="reply-content">
-                        <div class="reply-wrapper">
-                                <p>Welcome to reddot! If this is your first time here, feel free to create a post as an anonymous guest user above. However I encourage you to sign up for an account so you can subscribe to topics that interest you, as well as be able to track your posts, updoots, get notifications.</p>
+                new_post.innerHTML = `<div class="post-grid">
+                <div class="likebar">
+                        <div class="like-wrapper">
+                                <div class="upvote">
+                                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                                </div>
+                                <p>0</p>
+                                <div class="downvote">
+                                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                                </div>
                         </div>
                 </div>
-                
-                <div class="reply-bar">
-                        <input type="text" class="post-input" id="reply-input" placeholder=" Post a reply...">
-                        <a href="#" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i>
-                        </i></a>
+
+                <div class="info">
+                        
+                        <div class="user-ava"></div>
+                        <div class="info-wrapper-text">
+                                <p>${username}</p>
+                                <p style="text-indent: 2em" id="date-time">${submit_date}</p>
+                        </div>
+                        
                 </div>
-        
-        </div></div></div>`
+
+                <div class="post-content"> 
+                        <div class="text-wrapper">
+                                <p>${text_content}</p>
+                        </div>
+                </div>
+
+                
+
+                <div class="comment-bar">
+                        <div class="comment-bar-wrapper">
+                                <div class="comment-bar-messages">
+                                        <a href="#"><i class="fa fa-comment" aria-hidden="true"></i>
+                                        <a href="#"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a>
+                                        
+                                </div>
+                                
+                                <div class="comment-bar-share">
+                                        
+                                        <a href="#"><i class="fa fa-share" aria-hidden="true"></i></a>
+                                        <a href="#"><p style="text-indent: 8px">Share</p></a>
+                                        
+                                </div>
+
+                                <div class="comment-bar-save">
+                                        
+                                        <a href="#"><i class="fa fa-bookmark" aria-hidden="true"></i></a>
+                                        <a href="#"><p style="text-indent: 8px">Save</p></a>
+                                        
+                                </div>
+                                
+                        </div>
+                </div>
+
+                <div class="expand-container" id="expand-container">
+                        <!-- Add comments/replies above this point -->
+                        <div class="reply-content">
+                                <div class="reply-wrapper">
+                                        <p>Welcome to reddot! If this is your first time here, feel free to create a post as an anonymous guest user above. However I encourage you to sign up for an account so you can subscribe to topics that interest you, as well as be able to track your posts, updoots, get notifications.</p>
+                                </div>
+                        </div>
+                        
+                        <div class="reply-bar">
+                                <input type="text" class="post-input" id="reply-input" placeholder=" Post a reply...">
+                                <a href="#" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i>
+                                </i></a>
+                        </div>
+                
+                </div>
+        </div>`
 
                 
 
