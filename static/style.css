@@ -29,6 +29,7 @@ body {
   grid-template-areas:
   "likebar info info info info info info"
   "likebar post post post post post post"
+  "likebar expand expand expand expand expand expand"
   "likebar comment comment comment comment comment comment"
 }
 
@@ -81,6 +82,15 @@ body {
   border:1px solid #9e9e9e;
   border-top: none;
   border-bottom: none;
+  border-left: none;
+  width: 100%;
+  height: auto;
+  background-color:rgb(59, 59, 77);
+}
+
+.expand{
+  grid-area: expand;
+  border:1px solid #9e9e9e;
   border-left: none;
   width: 100%;
   height: auto;
