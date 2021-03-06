@@ -19,7 +19,7 @@ function main(){
         //         signupModal();
         // });
 
-        let comment_buttons = document.querySelectorAll("[id^='comment-expand-']");
+        //let comment_buttons = document.querySelectorAll("[id^='comment-expand-']");
         
         // comment_buttons.forEach(comment_button => {
         //         comment_button.addEventListener("click", function(event){
@@ -87,6 +87,30 @@ function signupModal(){
 
 }
 
+function createReply(target_post_id, target_reply){
+        let target_post = document.querySelector(`#${target_post_id}`);
+        console.log("Pre-container init");
+        let my_container = target_post.querySelector("#reply-content");
+        console.log("Post-container init");
+        
+        let reply_text = document.querySelector(target_reply).value;
+        if (reply_text == ""){
+                window.alert("Reply content cannot be blank!");
+                return;
+        }
+        else{
+                let reply_content = document.createElement('div');
+                reply_content.className = 'reply-wrapper';
+                reply_content.innerHTML = `<p>${reply_text} - u/testReplyUser</p>`
+
+                //Reset value box to empty
+                document.querySelector(target_reply).value = "";
+
+                my_container.appendChild(reply_content);
+        }
+
+}
+
 
 function createPost(post_array){
         let next_id = post_array.length;
@@ -95,7 +119,7 @@ function createPost(post_array){
         console.log("Create post executed")
 
         let container = document.querySelector("#content-container");
-        let username = 'testusername';
+        let username = 'u/testusername';
         
         let post_input = document.querySelector("#post-input");
         let text_content = post_input.value;
@@ -146,22 +170,22 @@ function createPost(post_array){
                 <div class="comment-bar">
                         <div class="comment-bar-wrapper">
                                 <div class="comment-bar-messages">
-                                        <a href="#"><i class="fa fa-comment" aria-hidden="true"></i>
-                                        <a href="#"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a>
+                                        <a href="#!"><i class="fa fa-comment" aria-hidden="true"></i>
+                                        <a href="#!"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a>
                                         
                                 </div>
                                 
                                 <div class="comment-bar-share">
                                         
-                                        <a href="#"><i class="fa fa-share" aria-hidden="true"></i></a>
-                                        <a href="#"><p style="text-indent: 8px">Share</p></a>
+                                        <a href="#!"><i class="fa fa-share" aria-hidden="true"></i></a>
+                                        <a href="#!"><p style="text-indent: 8px">Share</p></a>
                                         
                                 </div>
 
                                 <div class="comment-bar-save">
                                         
-                                        <a href="#"><i class="fa fa-bookmark" aria-hidden="true"></i></a>
-                                        <a href="#"><p style="text-indent: 8px">Save</p></a>
+                                        <a href="#!"><i class="fa fa-bookmark" aria-hidden="true"></i></a>
+                                        <a href="#!"><p style="text-indent: 8px">Save</p></a>
                                         
                                 </div>
                                 
@@ -170,25 +194,24 @@ function createPost(post_array){
 
                 <div class="expand-container" id="expand-container">
                         <!-- Add comments/replies above this point -->
-                        <div class="reply-content">
-                                <div class="reply-wrapper">
-                                        <p>Welcome to reddot! If this is your first time here, feel free to create a post as an anonymous guest user above. However I encourage you to sign up for an account so you can subscribe to topics that interest you, as well as be able to track your posts, updoots, get notifications.</p>
-                                </div>
+                        <div class="reply-content" id="reply-content">
                         </div>
                         
                         <div class="reply-bar">
-                                <input type="text" class="post-input" id="reply-input" placeholder=" Post a reply...">
-                                <a href="#" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i>
+                                <input type="text" class="post-input" id="reply-input-${next_id}" placeholder=" Post a reply...">
+                                <a href="#!" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i>
                                 </i></a>
                         </div>
                 
                 </div>
         </div>`
+                //Reset create a post text to empty
+                post_input.value = "";
 
-                
-
+                //Add the new post to the container
                 container.appendChild(new_post);
 
+                //Handle comment button
                 local_comment_button = new_post.querySelector(`#comment-expand-${next_id}`);
                 local_comment_button.addEventListener("click", function(event){
                         let this_button = event.target.id;
@@ -198,6 +221,21 @@ function createPost(post_array){
                         console.log("pair pt2: " + this_button);
                         
                         showComments(parent_post);
+                        
+                });
+
+                // //Handle adding a reply
+                local_reply_button = new_post.querySelector(`#btn-chevron-reply`);
+                local_reply_button.addEventListener("click", function(event){
+                        let this_button = event.target.id;
+                        
+                        let parent_post = `post-card-${next_id}`//getParentPost(this_button);
+                        console.log("pair pt1: " + parent_post)
+                        console.log("pair pt2: " + this_button);
+                        
+                        let target_reply = `#reply-input-${next_id}`
+                        createReply(parent_post, target_reply);
+                        console.log("exited create reply")
                 });
 
                 post_array.push(next_id);
