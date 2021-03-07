@@ -62,20 +62,74 @@ function currentDate(){
 }
 
 function loadCachedPosts(post_array){
-        let container = document.querySelector("#content-container");
+        
         if (post_array.length < 1){
                 console.log("No cached posts to load");
         }
-        else{
-                for (let i = 0; i < post_array.length; i++){
-                        container.appendChild(new_post[i]);
-                }
+        else{   
+                //For each set of data from cache, construct the post
+                post_array.forEach(function(item){
+                        cachedPostConstructor(item)
+                });
                 console.log("Loaded cached posts");
         }
 }
 
+function cachedPostConstructor(post_data){
+        //Order of post_data array: [next_id, submit_date, username, text_content, replies]
+        let next_id = post_data[0];
+        let submit_date = post_data[1];
+        let username = post_data[2];
+        let text_content = post_data[3];
+        let replies = post_data[4];
+
+        let container = document.querySelector("#content-container");
+        let cached_post = document.createElement('div');
+        cached_post.className = 'post-card';
+        cached_post.id = `post-card-${next_id}`;
+        cached_post.innerHTML = `<div class="post-grid"><div class="likebar"><div class="like-wrapper"><div class="upvote"><i class="fa fa-arrow-up" aria-hidden="true"></i></div><p>0</p><div class="downvote"><i class="fa fa-arrow-down" aria-hidden="true"></i></div></div></div><div class="info"><div class="user-ava"></div><div class="info-wrapper-text"><p>${username}</p><p style="text-indent: 2em" id="date-time">${submit_date}</p></div></div><div class="post-content"><div class="text-wrapper"><p>${text_content}</p></div></div><div class="comment-bar"><div class="comment-bar-wrapper"><div class="comment-bar-messages"><a href="#!"><i class="fa fa-comment" aria-hidden="true"></i><a href="#!"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a></div><div class="comment-bar-share"><a href="#!"><i class="fa fa-share" aria-hidden="true"></i></a><a href="#!"><p style="text-indent: 8px">Share</p></a></div><div class="comment-bar-save"><a href="#!"><i class="fa fa-bookmark" aria-hidden="true"></i></a><a href="#!"><p style="text-indent: 8px">Save</p></a></div></div></div><div class="expand-container" id="expand-container"><div class="reply-content" id="reply-content"></div><div class="reply-bar"><input type="text" class="post-input" id="reply-input-${next_id}" placeholder=" Post a reply..."><a href="#!" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i></i></a></div></div></div>`
+
+        //Add the cached post to the container
+        container.appendChild(cached_post);
+
+        //Handle comment button
+        local_comment_button = cached_post.querySelector(`#comment-expand-${next_id}`);
+        local_comment_button.addEventListener("click", function(event){
+                let this_button = event.target.id;
+                
+                let parent_post = `post-card-${next_id}`//getParentPost(this_button);
+                console.log("pair pt1: " + parent_post)
+                console.log("pair pt2: " + this_button);
+                
+                showComments(parent_post);
+                
+        });
+
+        // //Handle adding a reply
+        local_reply_button = cached_post.querySelector(`#btn-chevron-reply`);
+        local_reply_button.addEventListener("click", function(event){
+                let this_button = event.target.id;
+                
+                let parent_post = `post-card-${next_id}`//getParentPost(this_button);
+                console.log("pair pt1: " + parent_post)
+                console.log("pair pt2: " + this_button);
+                
+                let target_reply = `#reply-input-${next_id}`
+                createReply(parent_post, target_reply);
+                console.log("exited create reply")
+        });
+}
+
 function getCachedPosts(){
-        let posts = new Array(0);
+        let posts;
+        
+        if (localStorage.getItem('posts')){
+                posts = JSON.parse(localStorage.getItem('posts'));
+        }
+        else {
+                posts = [];
+        }
+       
         return posts;
 }
 
@@ -217,6 +271,8 @@ function createPost(post_array){
                 //Add the new post to the container
                 container.appendChild(new_post);
 
+                
+
                 //Handle comment button
                 local_comment_button = new_post.querySelector(`#comment-expand-${next_id}`);
                 local_comment_button.addEventListener("click", function(event){
@@ -243,9 +299,13 @@ function createPost(post_array){
                         createReply(parent_post, target_reply);
                         console.log("exited create reply")
                 });
+                
+                let replies = [];
+                let post_constructor_data = [next_id, submit_date, username, text_content, replies];
 
-                post_array.push(next_id);
-                console.log("post_array:" + post_array)
+                //Cache post
+                post_array.push(post_constructor_data);
+                localStorage.setItem('posts', JSON.stringify(post_array));
                 return post_array;
         }
 }
