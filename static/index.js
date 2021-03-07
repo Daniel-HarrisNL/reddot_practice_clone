@@ -89,9 +89,7 @@ function signupModal(){
 
 function createReply(target_post_id, target_reply){
         let target_post = document.querySelector(`#${target_post_id}`);
-        console.log("Pre-container init");
         let my_container = target_post.querySelector("#reply-content");
-        console.log("Post-container init");
         
         let reply_text = document.querySelector(target_reply).value;
         if (reply_text == ""){
@@ -105,8 +103,16 @@ function createReply(target_post_id, target_reply){
 
                 //Reset value box to empty
                 document.querySelector(target_reply).value = "";
-
+                //Insert new reply into container
                 my_container.appendChild(reply_content);
+
+                //Increment number of comments on counter button
+                let comment_counter = target_post.querySelector("[id^='comment-expand-']");
+                let full_inner = comment_counter.innerHTML;
+                let digit_pattern = /\d+/;
+                let integer_of_inner = parseInt(full_inner.match(digit_pattern));
+                integer_of_inner = integer_of_inner + 1;
+                comment_counter.innerHTML = `${integer_of_inner} Comments`
         }
 
 }
