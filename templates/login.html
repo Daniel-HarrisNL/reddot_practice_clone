@@ -3,15 +3,16 @@
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>reddot - Signup</title>
+        <title>reddot - Login</title>
         <link rel="stylesheet" type="text/css" href="static/signup.css" media="screen"/>
-        <script type="text/javascript" src="/static/signup.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script type="text/javascript" src="/static/login.js"></script>
 </head>
 <body>
-        <form action="/" class="signup-form" id="signup-form">
+        <form action="/" class="signup-form" id="login-form">
                 <div class="form-container">
-                  <h1>Sign Up</h1>
-                  <p>Please fill in this form to create your new reddot account!</p>
+                  <h1>Log In</h1>
+                  <p>Enter your username and password to start using reddot!</p>
                   <hr>
               
                   <label for="username"><b>Username</b></label>
@@ -20,11 +21,8 @@
                   <label for="password"><b>Password</b></label>
                   <input type="password" placeholder="Enter Password" id="password" class="form-input" required>
               
-                  <label for="password-confirm"><b>Confirm Password</b></label>
-                  <input type="password" placeholder="Confirm Password" id="password-confirm" class="form-input" required>
-                  
                   <label>
-                    <input type="checkbox" checked="checked" name="remember" id="signup-checkbox"> Remember me
+                    <input type="checkbox" checked="checked" name="remember" id="signup-checkbox"> Stay logged in
                   </label>
               
                   <div class="button-wrapper">

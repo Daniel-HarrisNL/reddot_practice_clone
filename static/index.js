@@ -161,7 +161,7 @@ function cachedPostConstructor(post_data){
                 else {
                         reply_array = [];
                 }
-                
+
                 createReply(parent_post, target_reply, reply_array);
                 console.log("exited create reply")
         });
@@ -263,75 +263,7 @@ function createPost(post_array){
                 let new_post = document.createElement('div');
                 new_post.className = 'post-card';
                 new_post.id = `post-card-${next_id}`;
-                new_post.innerHTML = `<div class="post-grid">
-                <div class="likebar">
-                        <div class="like-wrapper">
-                                <div class="upvote">
-                                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                                </div>
-                                <p>0</p>
-                                <div class="downvote">
-                                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
-                                </div>
-                        </div>
-                </div>
-
-                <div class="info">
-                        
-                        <div class="user-ava"></div>
-                        <div class="info-wrapper-text">
-                                <p>${username}</p>
-                                <p style="text-indent: 2em" id="date-time">${submit_date}</p>
-                        </div>
-                        
-                </div>
-
-                <div class="post-content"> 
-                        <div class="text-wrapper">
-                                <p>${text_content}</p>
-                        </div>
-                </div>
-
-                
-
-                <div class="comment-bar">
-                        <div class="comment-bar-wrapper">
-                                <div class="comment-bar-messages">
-                                        <a href="#!"><i class="fa fa-comment" aria-hidden="true"></i>
-                                        <a href="#!"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a>
-                                        
-                                </div>
-                                
-                                <div class="comment-bar-share">
-                                        
-                                        <a href="#!"><i class="fa fa-share" aria-hidden="true"></i></a>
-                                        <a href="#!"><p style="text-indent: 8px">Share</p></a>
-                                        
-                                </div>
-
-                                <div class="comment-bar-save">
-                                        
-                                        <a href="#!"><i class="fa fa-bookmark" aria-hidden="true"></i></a>
-                                        <a href="#!"><p style="text-indent: 8px">Save</p></a>
-                                        
-                                </div>
-                                
-                        </div>
-                </div>
-
-                <div class="expand-container" id="expand-container">
-                        <!-- Add comments/replies above this point -->
-                        <div class="reply-content" id="reply-content">
-                        </div>
-                        
-                        <div class="reply-bar">
-                                <input type="text" class="post-input" id="reply-input-${next_id}" placeholder=" Post a reply...">
-                                <a href="#!" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i>
-                                </i></a>
-                        </div>
-                
-                </div>
-        </div>`
+                new_post.innerHTML = `<div class="post-grid"><div class="likebar"><div class="like-wrapper"><div class="upvote"><i class="fa fa-arrow-up" aria-hidden="true"></i></div><p>0</p><div class="downvote"><i class="fa fa-arrow-down" aria-hidden="true"></i></div></div></div><div class="info"><div class="user-ava"></div><div class="info-wrapper-text"><p>${username}</p><p style="text-indent: 2em" id="date-time">${submit_date}</p></div></div><div class="post-content"><div class="text-wrapper"><p>${text_content}</p></div></div><div class="comment-bar"><div class="comment-bar-wrapper"><div class="comment-bar-messages"><a href="#!"><i class="fa fa-comment" aria-hidden="true"></i><a href="#!"><p style="text-indent: 8px" id="comment-expand-${next_id}">0 Comments</p></a></div><div class="comment-bar-share"><a href="#!"><i class="fa fa-share" aria-hidden="true"></i></a><a href="#!"><p style="text-indent: 8px">Share</p></a></div><div class="comment-bar-save"><a href="#!"><i class="fa fa-bookmark" aria-hidden="true"></i></a><a href="#!"><p style="text-indent: 8px">Save</p></a></div></div></div><div class="expand-container" id="expand-container"><div class="reply-content" id="reply-content"></div><div class="reply-bar"><input type="text" class="post-input" id="reply-input-${next_id}" placeholder=" Post a reply..."><a href="#!" class="btn-ico" id="btn-chevron-reply"><i class="fa fa-chevron-right" aria-hidden="true" ></i></i></a></div></div></div>`
                 //Reset create a post text to empty
                 post_input.value = "";
 
