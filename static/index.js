@@ -1,8 +1,10 @@
 function main(){
         console.log("index.js loaded");
         
-        let user_posts = getCachedPosts();
-        loadCachedPosts(user_posts);
+        let cache_data = getCachedPosts();
+        let user_posts = cache_data[0];
+        let user_replies = cache_data[1];
+        loadCachedPosts(user_posts, user_replies);
 
         // Create a post button
         let post_button = document.querySelector("#btn-chevron-post");
@@ -61,7 +63,7 @@ function currentDate(){
         return formattedDate;
 }
 
-function loadCachedPosts(post_array){
+function loadCachedPosts(post_array,reply_array){
         
         if (post_array.length < 1){
                 console.log("No cached posts to load");
@@ -73,6 +75,44 @@ function loadCachedPosts(post_array){
                 });
                 console.log("Loaded cached posts");
         }
+
+        if (reply_array.length < 1){
+                console.log("No cached replies to load");
+        }
+        else{   
+                //For each set of data from cache, construct the post
+                reply_array.forEach(function(item){
+                        cachedReplyConstructor(item)
+                });
+                console.log("Loaded cached replies");
+        }
+}
+function cachedReplyConstructor(reply_array){
+        //Order of reply_array data: [target_post_id,reply_text]
+        let target_post_id = reply_array[0];
+        let reply_text = reply_array[1];
+
+        let target_post = document.querySelector(`#${target_post_id}`);
+        let reply_container = target_post.querySelector("#reply-content");
+
+        let username = "u/testReplyUser";
+        
+        let reply_content = document.createElement('div');
+        reply_content.className = 'reply-wrapper';
+        reply_content.innerHTML = `<p>${reply_text} - ${username}</p>`
+
+        
+        //Insert new reply into container
+        reply_container.appendChild(reply_content);
+
+        //Increment number of comments on counter button
+        let comment_counter = target_post.querySelector("[id^='comment-expand-']");
+        let full_inner = comment_counter.innerHTML;
+        let digit_pattern = /\d+/;
+        let integer_of_inner = parseInt(full_inner.match(digit_pattern));
+        integer_of_inner = integer_of_inner + 1;
+        comment_counter.innerHTML = `${integer_of_inner} Comments`
+            
 }
 
 function cachedPostConstructor(post_data){
@@ -81,7 +121,7 @@ function cachedPostConstructor(post_data){
         let submit_date = post_data[1];
         let username = post_data[2];
         let text_content = post_data[3];
-        let replies = post_data[4];
+        //let replies = post_data[4];
 
         let container = document.querySelector("#content-container");
         let cached_post = document.createElement('div');
@@ -115,13 +155,21 @@ function cachedPostConstructor(post_data){
                 console.log("pair pt2: " + this_button);
                 
                 let target_reply = `#reply-input-${next_id}`
-                createReply(parent_post, target_reply);
+                if (localStorage.getItem('replies')){
+                        reply_array = JSON.parse(localStorage.getItem('replies'));
+                }
+                else {
+                        reply_array = [];
+                }
+                
+                createReply(parent_post, target_reply, reply_array);
                 console.log("exited create reply")
         });
 }
 
 function getCachedPosts(){
         let posts;
+        let replies;
         
         if (localStorage.getItem('posts')){
                 posts = JSON.parse(localStorage.getItem('posts'));
@@ -129,8 +177,15 @@ function getCachedPosts(){
         else {
                 posts = [];
         }
+
+        if (localStorage.getItem('replies')){
+                replies = JSON.parse(localStorage.getItem('replies'));
+        }
+        else {
+                replies = [];
+        }
        
-        return posts;
+        return [posts, replies];
 }
 
 function signupModal(){
@@ -141,9 +196,11 @@ function signupModal(){
 
 }
 
-function createReply(target_post_id, target_reply){
+function createReply(target_post_id, target_reply, reply_array){
         let target_post = document.querySelector(`#${target_post_id}`);
-        let my_container = target_post.querySelector("#reply-content");
+        let reply_container = target_post.querySelector("#reply-content");
+
+        let username = "u/testReplyUser";
         
         let reply_text = document.querySelector(target_reply).value;
         if (reply_text == ""){
@@ -153,12 +210,12 @@ function createReply(target_post_id, target_reply){
         else{
                 let reply_content = document.createElement('div');
                 reply_content.className = 'reply-wrapper';
-                reply_content.innerHTML = `<p>${reply_text} - u/testReplyUser</p>`
+                reply_content.innerHTML = `<p>${reply_text} - ${username}</p>`
 
                 //Reset value box to empty
                 document.querySelector(target_reply).value = "";
                 //Insert new reply into container
-                my_container.appendChild(reply_content);
+                reply_container.appendChild(reply_content);
 
                 //Increment number of comments on counter button
                 let comment_counter = target_post.querySelector("[id^='comment-expand-']");
@@ -166,9 +223,19 @@ function createReply(target_post_id, target_reply){
                 let digit_pattern = /\d+/;
                 let integer_of_inner = parseInt(full_inner.match(digit_pattern));
                 integer_of_inner = integer_of_inner + 1;
-                comment_counter.innerHTML = `${integer_of_inner} Comments`
+                comment_counter.innerHTML = `${integer_of_inner} Comments`;
+
+                let reply_constructor_data = [target_post_id,reply_text];
+                //Cache the reply
+                reply_array.push(reply_constructor_data);
+                localStorage.setItem('replies', JSON.stringify(reply_array));
+                console.log("Reply ARRAY CREATED")
+
+                return reply_array;
+
         }
 
+        
 }
 
 
@@ -296,12 +363,20 @@ function createPost(post_array){
                         console.log("pair pt2: " + this_button);
                         
                         let target_reply = `#reply-input-${next_id}`
-                        createReply(parent_post, target_reply);
+                        let reply_array;
+                        if (localStorage.getItem('replies')){
+                                reply_array = JSON.parse(localStorage.getItem('replies'));
+                        }
+                        else {
+                                reply_array = [];
+                        }
+
+                        reply_array = createReply(parent_post, target_reply, reply_array);
                         console.log("exited create reply")
                 });
                 
-                let replies = [];
-                let post_constructor_data = [next_id, submit_date, username, text_content, replies];
+        
+                let post_constructor_data = [next_id, submit_date, username, text_content];
 
                 //Cache post
                 post_array.push(post_constructor_data);
